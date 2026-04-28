@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUAC | Brac University Adventure Club</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Permanent+Marker&family=Inter:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="page1.css">
+</head>
+<body>
+
+    <main class="container">
+        <section class="left-panel">
+            <header class="main-header">
+                <div class="logo">
+                    <img src="logoo.png" alt="BUAC Logo">
+                </div>
+                
+                <div class="nav-wrapper">
+                    <nav class="menu-bar">
+                        <a href="#" class="active">Home</a>
+                        <a href="#">About</a>
+                        <a href="#">Menu</a>
+                    </nav>
+                    <div class="auth-bar">
+                        <a href="login.html" class="auth-btn">Log In</a>
+                        <a href="signup.html" class="auth-btn">Sign Up</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <h1 class="hero-text">
+                    <span class="small-title">Brac University</span><br>
+                    <span class="large-title" data-text="Adventure">Adventure</span><br>
+                    <span class="large-title" data-text="Club">Club</span>
+                </h1>
+                <p class="description">
+                    Explore the unexplored. Join the community of thrill-seekers at Brac University.
+                </p>
+                <div class="btn-wrap">
+                    <a href="#" class="brush-btn">Explore Now</a>
+                </div>
+            </div>
+            
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </section>
+
+        <section class="right-panel">
+            <div class="image-reveal"></div>
+            <div class="texture-overlay"></div>
+        </section>
+    </main>
+
+    <svg style="display: none;">
+        <defs>
+            <filter id="sketch">
+                <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" />
+            </filter>
+        </defs>
+    </svg>
+
+</body>
+</html>

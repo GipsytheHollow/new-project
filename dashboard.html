@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | BUAC Operations</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="logoo.png" alt="Logo" class="logo-img">
+                <h2>Adventure Club</h2>
+            </div>
+            <nav id="navMenu">
+                <a href="#" class="active" data-target="events-section"><i class="fa-solid fa-calendar-check"></i> Event
+                    Management</a>
+                <a href="#" data-target="members-section"><i class="fa-solid fa-users"></i> Member Analytics</a>
+                <a href="#" data-target="finance-section"><i class="fa-solid fa-wallet"></i> Financial Record</a>
+            </nav>
+            <div class="logout-container">
+                <button id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header>
+                <h1>Welcome Back, <span id="userName">User</span>!</h1>
+                <p>Winner of all barriers.</p>
+            </header>
+
+            <!-- Overview Section Removed -->
+
+            <!-- Event Management Section -->
+            <!-- Event Management Section -->
+            <section id="events-section" class="view-section active-section" style="display: block;">
+                <h2>Event Management Logistics</h2>
+                <div class="widgets-grid mt-4">
+
+                    <!-- Query 1: Upcoming Treks (Table) -->
+                    <div class="widget glass-card col-span-2">
+                        <div class="widget-header">
+                            <h3><i class="fa-solid fa-person-hiking"></i> Upcoming Treks</h3>
+                        </div>
+                        <div class="widget-body">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Spot Name</th>
+                                        <th>Date</th>
+                                        <th>Budget</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="trekTableBody">
+                                    <tr>
+                                        <td colspan="3"><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Query 2: Semester Planning (Cards) -->
+                    <div class="widget glass-card col-span-2">
+                        <div class="widget-header">
+                            <h3><i class="fa-solid fa-calendar-days"></i> Semester Planning</h3>
+                        </div>
+                        <div class="widget-body stat-card-container" id="semesterCards">
+                            <p><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</p>
+                        </div>
+                    </div>
+
+                    <!-- Query 3: High Budget Events (Alert List) -->
+                    <div class="widget glass-card alert-widget">
+                        <div class="widget-header">
+                            <h3><i class="fa-solid fa-triangle-exclamation"></i> High Budget Alerts</h3>
+                        </div>
+                        <div class="widget-body">
+                            <ul id="highBudgetList" class="alert-list">
+                                <li><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Query 4: New Destinations (Search & Grid) -->
+                    <div class="widget glass-card">
+                        <div class="widget-header">
+                            <h3><i class="fa-solid fa-map-pin"></i> Explore Rangamati</h3>
+                        </div>
+                        <div class="widget-body">
+                            <div class="dest-grid" id="destGrid">
+                                <p><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Member Analytics Section -->
+            <!-- Member Analytics Section -->
+            <section id="members-section" class="view-section" style="display: none;">
+                <h2>Member Engagement Analytics</h2>
+                <div class="widgets-grid mt-4">
+
+                    <!-- Query 4: Top Performers (Leaderboard) -->
+                    <div class="widget glass-card col-span-2">
+                        <div class="widget-header">
+                            <h3><i class="fa-solid fa-medal"></i> Top Performers Leaderboard</h3>
+                        </div>
+                        <div class="widget-body">
+                            <ul id="leaderboardList" class="data-list leaderboard">
+                                <li><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Query 1: Event Participation (Search & Detail List) -->
+                    <div class="widget glass-card">
+                        <div class="widget-header">
+                            <h3><i class="fa-solid fa-users-viewfinder"></i> Event Participation</h3>
+                        </div>
+                        <div class="widget-body">
+                            <div class="form-group mb-3">
+                                <input type="text" id="partEventId" placeholder="Event ID (e.g. E201)" value="E201">
+                                <button onclick="fetchParticipants()"><i class="fa-solid fa-search"></i> Search</button>
+                            </div>
+                            <ul id="partResults" class="data-list"></ul>
+                        </div>
+                    </div>
+
+                    <!-- Query 3: Peer Discovery (Profile Cards) -->
+                    <div class="widget glass-card">
+                        <div class="widget-header">
+                            <h3><i class="fa-solid fa-user-group"></i> Peer Discovery</h3>
+                        </div>
+                        <div class="widget-body">
+                            <div class="form-group mb-3">
+                                <input type="text" id="colleagueName" placeholder="Name (e.g. Ayman Sadiq)"
+                                    value="Ayman Sadiq">
+                                <button onclick="fetchColleagues()"><i class="fa-solid fa-search"></i> Find
+                                    Peers</button>
+                            </div>
+                            <div class="dest-grid" id="colleagueResultsGrid"></div>
+                        </div>
+                    </div>
+
+                    <!-- Query 2: Active Members (Contact Roster Table) -->
+                    <div class="widget glass-card col-span-2">
+                        <div class="widget-header">
+                            <h3><i class="fa-solid fa-address-book"></i> Active Member Roster</h3>
+                        </div>
+                        <div class="widget-body">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Join Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="activeMembersTable">
+                                    <tr>
+                                        <td colspan="3"><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Financial Record Section -->
+            <!-- Financial Record Section -->
+            <section id="finance-section" class="view-section" style="display: none;">
+                <h2>Transparent Financial Record</h2>
+                <div class="widgets-grid mt-4">
+
+                    <!-- Query 1: Budget Variance (Progress Bars) -->
+                    <div class="widget glass-card col-span-2">
+                        <div class="widget-header">
+                            <h3><i class="fa-solid fa-scale-balanced"></i> Budget Variance (Planned vs Actual)</h3>
+                        </div>
+                        <div class="widget-body" id="budgetVarianceContainer">
+                            <p><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</p>
+                        </div>
+                    </div>
+
+                    <!-- Query 2: Income Statement (Ledger Table) -->
+                    <div class="widget glass-card col-span-2">
+                        <div class="widget-header">
+                            <h3><i class="fa-solid fa-money-bill-trend-up"></i> Income Statement Ledger</h3>
+                        </div>
+                        <div class="widget-body">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Source / Description</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="incomeLedgerTable">
+                                    <tr>
+                                        <td colspan="3"><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Query 3: Sponsor Contribution (Showcase Cards) -->
+                    <div class="widget glass-card col-span-2">
+                        <div class="widget-header">
+                            <h3><i class="fa-solid fa-handshake-angle"></i> Sponsor Contributions</h3>
+                        </div>
+                        <div class="widget-body stat-card-container" id="sponsorCards">
+                            <p><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</p>
+                        </div>
+                    </div>
+
+                    <!-- Query 4: Inactive Members (Actionable List) -->
+                    <div class="widget glass-card col-span-2 alert-widget"
+                        style="border-color: rgba(249, 115, 22, 0.4);">
+                        <div class="widget-header">
+                            <h3><i class="fa-solid fa-user-clock"></i> Inactive Members (Needs Re-engagement)</h3>
+                        </div>
+                        <div class="widget-body">
+                            <ul id="inactiveMembersList" class="data-list">
+                                <li><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+    </div>
+    <script src="dashboard.js"></script>
+</body>
+
+</html>
