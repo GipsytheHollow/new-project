@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function fetchAndRender(url, containerId, emptyHtml, renderCallback) {
     const container = document.getElementById(containerId);
     try {
-        const res = await fetch(`https://buac-system.onrender.com${url}`);
+        const res = await fetch(url);
         const data = await res.json();
 
         if (data.error) throw new Error(data.error);
@@ -160,7 +160,7 @@ function loadMemberModule() {
     // Needs custom fetching due to slice(0,5) logic, but we can do it with fetchAndRender by slicing inside render or wrapping it.
     // To keep it simple, we use the helper and slice in the render logic if we want, but since map runs on everything, we'll manually fetch this one or use index.
     const leadList = document.getElementById('leaderboardList');
-    fetch('http://localhost:3000/api/members/top-performers')
+    fetch('/api/members/top-performers')
         .then(res => res.json())
         .then(tops => {
             if (tops.error) throw new Error(tops.error);
