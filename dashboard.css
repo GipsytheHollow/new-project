@@ -254,6 +254,29 @@ header p {
     transition: 0.3s;
 }
 
+/* Utilities */
+.mb-0 {
+    margin-bottom: 0 !important;
+}
+
+.text-orange {
+    color: #f97316 !important;
+}
+
+.filter-input {
+    padding: 5px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    border-radius: 5px;
+    width: 150px;
+}
+
+.filter-btn {
+    padding: 5px 10px;
+    margin-left: 5px;
+}
+
 .form-group button:hover {
     background: #fdba74;
 }
