@@ -46,8 +46,13 @@
 
                     <!-- Query 1: Upcoming Treks (Table) -->
                     <div class="widget glass-card col-span-2">
-                        <div class="widget-header">
+                        <div class="widget-header"
+                            style="display: flex; justify-content: space-between; align-items: center;">
                             <h3><i class="fa-solid fa-person-hiking"></i> Upcoming Treks</h3>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <input type="date" id="trekDateFilter" onchange="fetchTreks()"
+                                    style="padding: 5px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 5px;">
+                            </div>
                         </div>
                         <div class="widget-body">
                             <table class="data-table">
@@ -60,7 +65,8 @@
                                 </thead>
                                 <tbody id="trekTableBody">
                                     <tr>
-                                        <td colspan="3"><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</td>
+                                        <td colspan="3"><i class="fa-solid fa-spinner fa-spin"
+                                                style="color: #f97316;"></i> Loading data...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -69,8 +75,14 @@
 
                     <!-- Query 2: Semester Planning (Cards) -->
                     <div class="widget glass-card col-span-2">
-                        <div class="widget-header">
+                        <div class="widget-header"
+                            style="display: flex; justify-content: space-between; align-items: center;">
                             <h3><i class="fa-solid fa-calendar-days"></i> Semester Planning</h3>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <input type="number" id="semesterYearFilter" placeholder="Year (e.g. 2026)"
+                                    onchange="fetchSemesterPlanning()"
+                                    style="padding: 5px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 5px; width: 150px;">
+                            </div>
                         </div>
                         <div class="widget-body stat-card-container" id="semesterCards">
                             <p><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</p>
@@ -84,19 +96,25 @@
                         </div>
                         <div class="widget-body">
                             <ul id="highBudgetList" class="alert-list">
-                                <li><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</li>
+                                <li><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...
+                                </li>
                             </ul>
                         </div>
                     </div>
 
                     <!-- Query 4: New Destinations (Search & Grid) -->
                     <div class="widget glass-card">
-                        <div class="widget-header">
-                            <h3><i class="fa-solid fa-map-pin"></i> Explore Rangamati</h3>
+                        <div class="widget-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3><i class="fa-solid fa-map-pin"></i> Explore</h3>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <input type="text" id="districtFilter" placeholder="District (e.g. Rangamati)" value="Rangamati" style="padding: 5px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 5px; width: 150px;">
+                                <button onclick="fetchDestinations()" style="padding: 5px 10px; margin-left: 5px;"><i class="fa-solid fa-search"></i></button>
+                            </div>
                         </div>
                         <div class="widget-body">
                             <div class="dest-grid" id="destGrid">
-                                <p><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</p>
+                                <p><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -117,7 +135,8 @@
                         </div>
                         <div class="widget-body">
                             <ul id="leaderboardList" class="data-list leaderboard">
-                                <li><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</li>
+                                <li><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -168,7 +187,8 @@
                                 </thead>
                                 <tbody id="activeMembersTable">
                                     <tr>
-                                        <td colspan="3"><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</td>
+                                        <td colspan="3"><i class="fa-solid fa-spinner fa-spin"
+                                                style="color: #f97316;"></i> Loading data...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -196,8 +216,11 @@
 
                     <!-- Query 2: Income Statement (Ledger Table) -->
                     <div class="widget glass-card col-span-2">
-                        <div class="widget-header">
+                        <div class="widget-header" style="display: flex; justify-content: space-between; align-items: center;">
                             <h3><i class="fa-solid fa-money-bill-trend-up"></i> Income Statement Ledger</h3>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <input type="number" id="incomeYearFilter" placeholder="Year (e.g. 2026)" onchange="fetchIncomeLedger()" style="padding: 5px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 5px; width: 150px;">
+                            </div>
                         </div>
                         <div class="widget-body">
                             <table class="data-table">
@@ -210,7 +233,8 @@
                                 </thead>
                                 <tbody id="incomeLedgerTable">
                                     <tr>
-                                        <td colspan="3"><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</td>
+                                        <td colspan="3"><i class="fa-solid fa-spinner fa-spin"
+                                                style="color: #f97316;"></i> Loading data...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -235,7 +259,8 @@
                         </div>
                         <div class="widget-body">
                             <ul id="inactiveMembersList" class="data-list">
-                                <li><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</li>
+                                <li><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...
+                                </li>
                             </ul>
                         </div>
                     </div>

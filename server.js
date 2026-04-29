@@ -97,13 +97,19 @@ const executeQuery = async (res, sql, params = []) => {
 
 // 1. Upcoming Trekking events and destination
 app.get('/api/events/trekking', (req, res) => {
-    const sql = `
-        SELECT E.event_id, D.spot_name, E.event_date, E.budget 
+    let sql = `
+        SELECT E.event_id, D.spot_name, DATE_FORMAT(E.event_date, '%Y-%m-%d') as event_date, E.budget 
         FROM Event E 
         JOIN Destination D ON E.dest_id = D.dest_id 
         WHERE E.event_type = 'Trekking'
     `;
-    executeQuery(res, sql);
+    const params = [];
+    if (req.query.date) {
+        sql += ` AND DATE(E.event_date) > ?`;
+        params.push(req.query.date);
+    }
+    sql += ` ORDER BY E.event_date ASC`;
+    executeQuery(res, sql, params);
 });
 
 // 2. Track member participation for a specific event
@@ -119,12 +125,17 @@ app.get('/api/events/:eventId/participants', (req, res) => {
 
 // 3. Calculate total estimated budget per semester
 app.get('/api/events/budget/semester', (req, res) => {
-    const sql = `
+    let sql = `
         SELECT semester_name, year, SUM(budget) AS Total_Planned_Budget 
         FROM Event 
-        GROUP BY semester_name, year
     `;
-    executeQuery(res, sql);
+    const params = [];
+    if (req.query.year) {
+        sql += ` WHERE year = ?`;
+        params.push(req.query.year);
+    }
+    sql += ` GROUP BY semester_name, year ORDER BY year DESC, semester_name ASC`;
+    executeQuery(res, sql, params);
 });
 
 // 4. Find an event which has a budget higher than average budget
@@ -148,10 +159,10 @@ app.get('/api/events/budget/compare', (req, res) => {
     executeQuery(res, sql);
 });
 
-// 6. Find a list of active members
+// 6. Active member roster
 app.get('/api/members/active', (req, res) => {
     const sql = `
-        SELECT Name, E_mail 
+        SELECT Name, E_mail, DATE_FORMAT(Join_Date, '%Y-%m-%d') as Join_Date 
         FROM Member 
         WHERE Status = 'Active'
     `;
@@ -195,13 +206,18 @@ app.get('/api/members/inactive', (req, res) => {
 
 // 10. Generate a basic income statement
 app.get('/api/finance/income', (req, res) => {
-    const sql = `
-        SELECT date, amount, source_type, description 
+    let sql = `
+        SELECT DATE_FORMAT(date, '%Y-%m-%d') as date, amount, source_type, description 
         FROM Finance 
-        WHERE type = 'Income' 
-        ORDER BY date DESC
+        WHERE type = 'Income'
     `;
-    executeQuery(res, sql);
+    const params = [];
+    if (req.query.year) {
+        sql += ` AND YEAR(date) = ?`;
+        params.push(req.query.year);
+    }
+    sql += ` ORDER BY date DESC`;
+    executeQuery(res, sql, params);
 });
 
 // 11. List all sponsors and total amount they have contributed
@@ -216,16 +232,18 @@ app.get('/api/finance/sponsors', (req, res) => {
     executeQuery(res, sql);
 });
 
-// 12. Unused destinations in Rangamati with budget <= 100k
-app.get('/api/destinations/unused', (req, res) => {
+// 12. Explore destinations by district
+app.get('/api/destinations/explore', (req, res) => {
+    let district = req.query.district || 'Rangamati';
     const sql = `
-        SELECT Spot_name, District, estimated_budget
-        FROM Destination
-        WHERE District = 'Rangamati'
-          AND estimated_budget <= 100000
-          AND dest_ID NOT IN (SELECT DISTINCT dest_id FROM Event)
+        SELECT D.Spot_name, D.estimated_budget, COUNT(E.event_id) as times_visited
+        FROM Destination D
+        LEFT JOIN Event E ON D.dest_ID = E.dest_id
+        WHERE D.District = ?
+        GROUP BY D.dest_ID, D.Spot_name, D.estimated_budget
+        ORDER BY times_visited DESC
     `;
-    executeQuery(res, sql);
+    executeQuery(res, sql, [district]);
 });
 
 // Start Server

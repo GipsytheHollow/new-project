@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         fetchParticipants();
         fetchColleagues();
+        fetchDestinations();
     }, 500); // slight delay to let DOM settle if needed
 });
 
@@ -71,25 +72,10 @@ async function fetchAndRender(url, containerId, emptyHtml, renderCallback) {
 
 function loadEventModule() {
     // Query 1: Upcoming Treks (Table)
-    fetchAndRender('/api/events/trekking', 'trekTableBody', '<tr><td colspan="3">No treks planned.</td></tr>', t => {
-        const dateStr = new Date(t.event_date).toLocaleDateString();
-        const budgetClass = t.budget < 50000 ? 'budget-safe' : 'budget-warn';
-        return `
-            <tr>
-                <td><strong>${t.spot_name}</strong></td>
-                <td>${dateStr}</td>
-                <td class="${budgetClass}">৳${t.budget.toLocaleString()}</td>
-            </tr>
-        `;
-    });
+    fetchTreks();
 
     // Query 2: Semester Planning (Stat Cards)
-    fetchAndRender('/api/events/budget/semester', 'semesterCards', '<p>No semester data.</p>', s => `
-        <div class="stat-card">
-            <h4>${s.semester_name} ${s.year}</h4>
-            <div class="stat-value">৳${parseInt(s.Total_Planned_Budget).toLocaleString()}</div>
-        </div>
-    `);
+    fetchSemesterPlanning();
 
     // Query 3: High Budget Events (Alert List)
     fetchAndRender('/api/events/budget/above-average', 'highBudgetList', '<li>No high budget events found.</li>', e => `
@@ -99,11 +85,68 @@ function loadEventModule() {
         </li>
     `);
 
-    // Query 4: Unused Destinations (Grid)
-    fetchAndRender('/api/destinations/unused', 'destGrid', '<p>No destinations found.</p>', d => `
+    // Query 4: Destinations (Grid)
+    // Initially fetched via fetchDestinations() in the setTimeout above
+}
+
+function fetchTreks() {
+    const dateInput = document.getElementById('trekDateFilter');
+    let url = '/api/events/trekking';
+    if (dateInput && dateInput.value) {
+        url += `?date=${encodeURIComponent(dateInput.value)}`;
+    }
+    document.getElementById('trekTableBody').innerHTML = '<tr><td colspan="3"><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</td></tr>';
+    
+    fetchAndRender(url, 'trekTableBody', '<tr><td colspan="3">No treks planned.</td></tr>', t => {
+        // Format date exactly as MM-DD-YYYY regardless of backend output
+        const d = new Date(t.event_date);
+        const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+        const dd = String(d.getUTCDate()).padStart(2, '0');
+        const yyyy = d.getUTCFullYear();
+        const displayDate = `${mm}-${dd}-${yyyy}`;
+
+        const budgetClass = t.budget < 50000 ? 'budget-safe' : 'budget-warn';
+        return `
+            <tr>
+                <td><strong>${t.spot_name}</strong></td>
+                <td>${displayDate}</td>
+                <td class="${budgetClass}">৳${t.budget.toLocaleString()}</td>
+            </tr>
+        `;
+    });
+}
+
+function fetchSemesterPlanning() {
+    const yearInput = document.getElementById('semesterYearFilter');
+    let url = '/api/events/budget/semester';
+    if (yearInput && yearInput.value) {
+        url += `?year=${encodeURIComponent(yearInput.value)}`;
+    }
+    document.getElementById('semesterCards').innerHTML = '<p><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</p>';
+    
+    fetchAndRender(url, 'semesterCards', '<p>No semester data found for this year.</p>', s => `
+        <div class="stat-card">
+            <h4>${s.semester_name} ${s.year}</h4>
+            <div class="stat-value">৳${parseInt(s.Total_Planned_Budget).toLocaleString()}</div>
+        </div>
+    `);
+}
+
+function fetchDestinations() {
+    const districtInput = document.getElementById('districtFilter');
+    let url = '/api/destinations/explore';
+    if (districtInput && districtInput.value) {
+        url += `?district=${encodeURIComponent(districtInput.value)}`;
+    }
+    document.getElementById('destGrid').innerHTML = '<p><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</p>';
+    
+    fetchAndRender(url, 'destGrid', '<p>No destinations found in this district.</p>', d => `
         <div class="dest-card">
             <h4>${d.Spot_name}</h4>
             <p>Est. Budget: ৳${d.estimated_budget.toLocaleString()}</p>
+            <p style="color: #f97316; font-size: 0.85rem; font-weight: bold; margin-top: 5px;">
+                <i class="fa-solid fa-route"></i> Visited: ${d.times_visited} time(s)
+            </p>
         </div>
     `);
 }
@@ -138,13 +181,24 @@ function loadMemberModule() {
         }).catch(err => leadList.innerHTML = `<li>Error: ${err.message}</li>`);
 
     // Query 2: Active Members (Contact Roster Table)
-    fetchAndRender('/api/members/active', 'activeMembersTable', '<tr><td colspan="3">No active members.</td></tr>', m => `
+    fetchAndRender('/api/members/active', 'activeMembersTable', '<tr><td colspan="3">No active members.</td></tr>', m => {
+        let displayDate = 'N/A';
+        if (m.Join_Date) {
+            const d = new Date(m.Join_Date);
+            const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+            const dd = String(d.getUTCDate()).padStart(2, '0');
+            const yyyy = d.getUTCFullYear();
+            displayDate = `${mm}-${dd}-${yyyy}`;
+        }
+        
+        return `
         <tr>
             <td><strong>${m.Name}</strong></td>
             <td>${m.E_mail}</td>
-            <td style="color:#94a3b8;">N/A</td>
+            <td style="color:#94a3b8;">${displayDate}</td>
         </tr>
-    `);
+        `;
+    });
 }
 
 function fetchParticipants() {
@@ -201,16 +255,7 @@ function loadFinanceModule() {
     });
 
     // Query 2: Income Statement (Ledger Table)
-    fetchAndRender('/api/finance/income', 'incomeLedgerTable', '<tr><td colspan="3">No income records.</td></tr>', i => {
-        const dateStr = new Date(i.date).toLocaleDateString();
-        return `
-            <tr>
-                <td>${dateStr}</td>
-                <td><strong>${i.source_type}</strong><br><small style="color:#94a3b8;">${i.description}</small></td>
-                <td class="text-income">+৳${i.amount.toLocaleString()}</td>
-            </tr>
-        `;
-    });
+    fetchIncomeLedger();
 
     // Query 3: Sponsor Contribution (Showcase Cards)
     fetchAndRender('/api/finance/sponsors', 'sponsorCards', '<p>No sponsors found.</p>', s => `
@@ -230,4 +275,30 @@ function loadFinanceModule() {
             <button class="action-btn"><i class="fa-solid fa-paper-plane"></i> Send Invite</button>
         </li>
     `);
+}
+
+function fetchIncomeLedger() {
+    const yearInput = document.getElementById('incomeYearFilter');
+    let url = '/api/finance/income';
+    if (yearInput && yearInput.value) {
+        url += `?year=${encodeURIComponent(yearInput.value)}`;
+    }
+    document.getElementById('incomeLedgerTable').innerHTML = '<tr><td colspan="3"><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</td></tr>';
+    
+    fetchAndRender(url, 'incomeLedgerTable', '<tr><td colspan="3">No income records found for this year.</td></tr>', i => {
+        // Date is already formatted as YYYY-MM-DD from the backend
+        const d = new Date(i.date);
+        const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+        const dd = String(d.getUTCDate()).padStart(2, '0');
+        const yyyy = d.getUTCFullYear();
+        const displayDate = `${mm}-${dd}-${yyyy}`;
+
+        return `
+            <tr>
+                <td>${displayDate}</td>
+                <td><strong>${i.source_type}</strong><br><small style="color:#94a3b8;">${i.description}</small></td>
+                <td class="text-income">+৳${i.amount.toLocaleString()}</td>
+            </tr>
+        `;
+    });
 }
