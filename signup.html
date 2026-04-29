@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up | BUAC</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Inter:wght@400;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="auth.css">
 </head>
+
 <body>
 
     <a href="index.html" class="back-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
@@ -18,7 +22,7 @@
             <h2>Join the Club</h2>
             <p>Begin your journey with thrill-seekers.</p>
         </div>
-        
+
         <form id="signupForm">
             <div class="input-group">
                 <input type="text" id="memberId" placeholder="Member ID (e.g. 24101606)" required>
@@ -43,25 +47,25 @@
     <script>
         document.getElementById('signupForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const memberId = document.getElementById('memberId').value;
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const submitBtn = document.querySelector('.auth-submit');
-            
+
             submitBtn.textContent = 'Creating account...';
             submitBtn.disabled = true;
 
             try {
-                const response = await fetch('http://localhost:3000/api/signup', {
+                const response = await fetch('http://buac-system.onrender.com/api/signup', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ memberId, name, email, password })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (response.ok) {
                     alert('Account created successfully! Please log in.');
                     window.location.href = 'login.html';
@@ -78,4 +82,5 @@
         });
     </script>
 </body>
+
 </html>

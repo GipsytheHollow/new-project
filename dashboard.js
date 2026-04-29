@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     const storedUser = JSON.parse(localStorage.getItem('user'));
     if (storedUser && storedUser.name) {
         document.getElementById('userName').textContent = storedUser.name;
@@ -13,13 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const targetId = link.getAttribute('data-target');
-            
+
             navLinks.forEach(l => l.classList.remove('active'));
             sections.forEach(s => {
                 s.style.display = 'none';
                 s.classList.remove('active-section');
             });
-            
+
             link.classList.add('active');
             const targetSection = document.getElementById(targetId);
             targetSection.style.display = 'block';
@@ -48,16 +48,16 @@ document.addEventListener('DOMContentLoaded', () => {
 async function fetchAndRender(url, containerId, emptyHtml, renderCallback) {
     const container = document.getElementById(containerId);
     try {
-        const res = await fetch(`http://localhost:3000${url}`);
+        const res = await fetch(`https://buac-system.onrender.com${url}`);
         const data = await res.json();
-        
+
         if (data.error) throw new Error(data.error);
-        
+
         if (data.length === 0) {
             container.innerHTML = emptyHtml;
             return;
         }
-        
+
         // .map().join('') is much faster than .forEach(innerHTML +=) as it only repaints the DOM once
         container.innerHTML = data.map(renderCallback).join('');
     } catch (error) {
@@ -96,7 +96,7 @@ function fetchTreks() {
         url += `?date=${encodeURIComponent(dateInput.value)}`;
     }
     document.getElementById('trekTableBody').innerHTML = '<tr><td colspan="3"><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</td></tr>';
-    
+
     fetchAndRender(url, 'trekTableBody', '<tr><td colspan="3">No treks planned.</td></tr>', t => {
         // Format date exactly as MM-DD-YYYY regardless of backend output
         const d = new Date(t.event_date);
@@ -123,7 +123,7 @@ function fetchSemesterPlanning() {
         url += `?year=${encodeURIComponent(yearInput.value)}`;
     }
     document.getElementById('semesterCards').innerHTML = '<p><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</p>';
-    
+
     fetchAndRender(url, 'semesterCards', '<p>No semester data found for this year.</p>', s => `
         <div class="stat-card">
             <h4>${s.semester_name} ${s.year}</h4>
@@ -139,7 +139,7 @@ function fetchDestinations() {
         url += `?district=${encodeURIComponent(districtInput.value)}`;
     }
     document.getElementById('destGrid').innerHTML = '<p><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</p>';
-    
+
     fetchAndRender(url, 'destGrid', '<p>No destinations found in this district.</p>', d => `
         <div class="dest-card">
             <h4>${d.Spot_name}</h4>
@@ -163,14 +163,14 @@ function loadMemberModule() {
     fetch('http://localhost:3000/api/members/top-performers')
         .then(res => res.json())
         .then(tops => {
-            if(tops.error) throw new Error(tops.error);
-            if(tops.length === 0) { leadList.innerHTML = '<li>No performers found.</li>'; return; }
+            if (tops.error) throw new Error(tops.error);
+            if (tops.length === 0) { leadList.innerHTML = '<li>No performers found.</li>'; return; }
             leadList.innerHTML = tops.slice(0, 5).map((m, index) => {
                 let medal = '';
                 if (index === 0) medal = '<i class="fa-solid fa-medal" style="color: #fbbf24;"></i> '; // Gold
                 else if (index === 1) medal = '<i class="fa-solid fa-medal" style="color: #94a3b8;"></i> '; // Silver
                 else if (index === 2) medal = '<i class="fa-solid fa-medal" style="color: #b45309;"></i> '; // Bronze
-                else medal = `<span style="color: #64748b; font-weight: bold; width: 20px; display:inline-block;">${index+1}.</span> `;
+                else medal = `<span style="color: #64748b; font-weight: bold; width: 20px; display:inline-block;">${index + 1}.</span> `;
                 return `
                     <li>
                         <span class="item-title">${medal} ${m.Name}</span>
@@ -190,7 +190,7 @@ function loadMemberModule() {
             const yyyy = d.getUTCFullYear();
             displayDate = `${mm}-${dd}-${yyyy}`;
         }
-        
+
         return `
         <tr>
             <td><strong>${m.Name}</strong></td>
@@ -284,7 +284,7 @@ function fetchIncomeLedger() {
         url += `?year=${encodeURIComponent(yearInput.value)}`;
     }
     document.getElementById('incomeLedgerTable').innerHTML = '<tr><td colspan="3"><i class="fa-solid fa-spinner fa-spin" style="color: #f97316;"></i> Loading data...</td></tr>';
-    
+
     fetchAndRender(url, 'incomeLedgerTable', '<tr><td colspan="3">No income records found for this year.</td></tr>', i => {
         // Date is already formatted as YYYY-MM-DD from the backend
         const d = new Date(i.date);
