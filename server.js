@@ -15,9 +15,9 @@ app.use(express.static('./')); // Serves your static HTML/CSS files
 
 // SIGNUP ROUTE
 app.post('/api/signup', async (req, res) => {
-    const { memberId, name, email, password } = req.body;
+    const { memberId, name, email, joinDate, deptId, posId, phone, password } = req.body;
 
-    if (!memberId || !name || !email || !password) {
+    if (!memberId || !name || !email || !password || !joinDate || !deptId || !posId || !phone) {
         return res.status(400).json({ error: 'All fields are required.' });
     }
 
@@ -27,8 +27,8 @@ app.post('/api/signup', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         // Insert new member into the DB using parameterized query
-        const sql = `INSERT INTO Member (Member_ID, Name, E_mail, password, Status, Cumulative_Points) VALUES (?, ?, ?, ?, 'Active', 0)`;
-        await db.query(sql, [memberId, name, email, hashedPassword]);
+        const sql = `INSERT INTO Member (Member_ID, Name, E_mail, Join_Date, Dept_ID, Pos_ID, Phone, password, Status, Cumulative_Points) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Active', 0)`;
+        await db.query(sql, [memberId, name, email, joinDate, deptId, posId, phone, hashedPassword]);
 
         res.status(201).json({ message: 'User registered successfully!' });
     } catch (error) {
