@@ -67,13 +67,13 @@ app.post('/api/login', async (req, res) => {
         }
 
         // Login successful (In a real app, generate a JWT token here)
-        res.status(200).json({ 
-            message: 'Login successful!', 
-            user: { 
-                id: user.Member_ID, 
-                name: user.Name, 
-                email: user.E_mail 
-            } 
+        res.status(200).json({
+            message: 'Login successful!',
+            user: {
+                id: user.Member_ID,
+                name: user.Name,
+                email: user.E_mail
+            }
         });
     } catch (error) {
         console.error('Login Error:', error);
