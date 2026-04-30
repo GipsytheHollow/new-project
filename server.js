@@ -22,13 +22,17 @@ app.post('/api/signup', async (req, res) => {
     }
 
     try {
+        // Parse P01 -> 1, D01 -> 1 to match the database INT columns
+        const parsedPosId = parseInt(posId.replace(/\D/g, ''), 10) || posId;
+        const parsedDeptId = parseInt(deptId.replace(/\D/g, ''), 10) || deptId;
+
         // Hash the password with bcrypt (Cost factor 10)
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         // Insert new member into the DB using parameterized query
         const sql = `INSERT INTO Member (Member_ID, Name, E_mail, Join_Date, Dept_ID, Pos_ID, Phone, password, Status, Cumulative_Points) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Active', 0)`;
-        await db.query(sql, [memberId, name, email, joinDate, deptId, posId, phone, hashedPassword]);
+        await db.query(sql, [memberId, name, email, joinDate, parsedDeptId, parsedPosId, phone, hashedPassword]);
 
         res.status(201).json({ message: 'User registered successfully!' });
     } catch (error) {
