@@ -1,4 +1,4 @@
-/* --- RESET & BASE --- */
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { 
     background-color: #000; 
@@ -11,7 +11,7 @@ body {
     background: linear-gradient(to right, rgba(0,0,0,0.9), rgba(0,0,0,0.7)), url('waterfall.jpg') center/cover;
 }
 
-/* --- AUTH CONTAINER --- */
+
 .auth-container {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(15px);
@@ -54,7 +54,7 @@ body {
     font-size: 13px;
 }
 
-/* --- FORM ELEMENTS --- */
+
 .input-group {
     margin-bottom: 20px;
     position: relative;

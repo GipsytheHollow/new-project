@@ -1,4 +1,4 @@
-/* Global Reset & Typography */
+
 * {
     margin: 0;
     padding: 0;
@@ -12,13 +12,13 @@ body {
     min-height: 100vh;
 }
 
-/* Layout container */
+
 .dashboard-container {
     display: flex;
     min-height: 100vh;
 }
 
-/* Sidebar Styling */
+
 .sidebar {
     width: 260px;
     background: rgba(15, 23, 42, 0.6);
@@ -98,7 +98,7 @@ nav a:hover, nav a.active {
     color: #fca5a5;
 }
 
-/* Main Content */
+
 .main-content {
     flex-grow: 1;
     padding: 3rem 4rem;
@@ -116,14 +116,14 @@ header p {
     margin-bottom: 3rem;
 }
 
-/* Widgets Layout */
+
 .widgets-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 2rem;
 }
 
-/* Glassmorphism Cards */
+
 .glass-card {
     background: rgba(30, 41, 59, 0.5);
     backdrop-filter: blur(12px);
@@ -169,7 +169,7 @@ header p {
     font-weight: 600;
 }
 
-/* Data Lists inside widgets */
+
 .data-list {
     list-style: none;
 }
@@ -203,7 +203,7 @@ header p {
     border-radius: 6px;
 }
 
-/* View Sections */
+
 .view-section {
     animation: fadeIn 0.4s ease;
 }
@@ -254,7 +254,7 @@ header p {
     transition: 0.3s;
 }
 
-/* Utilities */
+
 .mb-0 {
     margin-bottom: 0 !important;
 }
@@ -281,9 +281,7 @@ header p {
     background: #fdba74;
 }
 
-/* ==========================================
-   MODULE 1: UI COMPONENTS
-   ========================================== */
+
 
 .fetch-all-btn {
     background: #f97316;
@@ -303,7 +301,7 @@ header p {
     transform: translateY(-2px);
 }
 
-/* Data Tables */
+
 .data-table {
     width: 100%;
     border-collapse: collapse;
@@ -322,7 +320,7 @@ header p {
 .budget-safe { color: #4ade80; font-weight: bold; }
 .budget-warn { color: #fbbf24; font-weight: bold; }
 
-/* Stat Cards Container */
+
 .stat-card-container {
     display: flex;
     gap: 15px;
@@ -348,7 +346,7 @@ header p {
     font-weight: 700;
 }
 
-/* Alert Widget */
+
 .alert-widget {
     border: 1px solid rgba(239, 68, 68, 0.4);
     box-shadow: 0 4px 20px rgba(239, 68, 68, 0.1);
@@ -361,7 +359,7 @@ header p {
     background: rgba(239, 68, 68, 0.05);
 }
 
-/* Dest Grid */
+
 .dest-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -383,11 +381,9 @@ header p {
 .dest-card h4 { color: #f1f5f9; margin-bottom: 5px; }
 .dest-card p { color: #f97316; font-size: 0.85rem; font-weight: 600; }
 
-/* ==========================================
-   MODULE 3: FINANCIAL UI COMPONENTS
-   ========================================== */
 
-/* Progress Bars */
+
+
 .progress-container {
     background: rgba(30, 30, 30, 0.8);
     border-radius: 8px;
@@ -420,7 +416,7 @@ header p {
     background: #ef4444;
 }
 
-/* Action Buttons */
+
 .action-btn {
     background: rgba(249, 115, 22, 0.15);
     color: #f97316;

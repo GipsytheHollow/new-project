@@ -1,8 +1,8 @@
-/* --- RESET & BASE --- */
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; }
 
-/* --- ANIMATIONS --- */
+
 @keyframes slowReveal {
     0% { transform: scale(1.3); filter: blur(40px) brightness(0); opacity: 0; }
     10% { opacity: 1; }
@@ -19,14 +19,14 @@ body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; ov
     100% { width: 100%; border-right-color: transparent; }
 }
 
-/* --- LAYOUT 40:60 --- */
+
 .container { display: flex; height: 100vh; width: 100vw; }
 .left-panel { flex: 0.4; background: #000; display: flex; flex-direction: column; justify-content: center; padding: 0 6%; position: relative; z-index: 10; }
 .right-panel { flex: 0.6; position: relative; overflow: hidden; background: #000; }
 
-/* --- LOGO IMAGE STYLING --- */
+
 .logo {
-    width: 40px; /* Matching the previous icon size */
+    width: 40px; 
     height: 40px;
     display: flex;
     align-items: center;
@@ -36,18 +36,18 @@ body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; ov
 .logo img {
     width: 100%;
     height: auto;
-    object-fit: contain; /* Ensures logo doesn't stretch */
-    filter: brightness(1); /* Keeps it bright */
+    object-fit: contain; 
+    filter: brightness(1); 
 }
 
-/* --- HEADER & NAVIGATION --- */
+
 .main-header { position: absolute; top: 0; left: 0; width: 100%; padding: 40px 6%; display: flex; align-items: center; z-index: 100; }
 .nav-wrapper { display: flex; justify-content: space-between; align-items: center; flex-grow: 1; margin-left: 30px; }
 .menu-bar a { font-family: 'Montserrat', sans-serif; color: #fff; text-decoration: none; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; margin-right: 20px; transition: 0.4s; }
 .auth-btn { background: #fff; color: #000 !important; text-decoration: none; font-family: 'Montserrat', sans-serif; font-size: 9px; font-weight: 700; padding: 8px 18px; margin-left: 8px; border-radius: 2px; border: 1px solid #fff; transition: 0.4s; }
 .auth-btn:hover { background: transparent; color: #fff !important; }
 
-/* --- TYPOGRAPHY --- */
+
 .hero-text { font-family: 'Montserrat', sans-serif; line-height: 1.1; margin-bottom: 25px; text-transform: uppercase; }
 .small-title { font-size: clamp(13px, 1.3vw, 17px); font-weight: 300; letter-spacing: 10px; color: #888; margin-bottom: 10px; display: inline-block; opacity: 0; animation: fancyFadeUp 1.2s ease forwards 0.3s; }
 .large-title { font-size: clamp(35px, 5.5vw, 65px); font-weight: 700; letter-spacing: 1px; color: rgba(255, 255, 255, 0.1); -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2); position: relative; display: inline-block; opacity: 0; animation: fancyFadeUp 1.2s ease forwards; }
@@ -58,12 +58,12 @@ body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; ov
 .large-title:nth-of-type(3)::before { animation: textFill 1s ease forwards 1.2s; }
 .description { max-width: 320px; color: #555; font-size: 13px; line-height: 1.7; margin-bottom: 35px; opacity: 0; animation: fancyFadeUp 1.2s ease forwards 1.4s; }
 
-/* --- BUTTON & SOCIALS --- */
+
 .brush-btn { display: inline-block; padding: 16px 45px; background: #fff; color: #000; text-decoration: none; font-family: 'Permanent Marker', cursive; font-size: 1.2rem; filter: url(#sketch); opacity: 0; animation: fancyFadeUp 1.2s ease forwards 1.6s; }
 .social-icons { position: absolute; bottom: 50px; left: 6%; display: flex; gap: 20px; }
 .social-icons a { color: #fff; font-size: 17px; opacity: 0; animation: fancyFadeUp 1s ease forwards 1.8s; }
 
-/* --- SNAPPY MISTY IMAGE --- */
+
 .image-reveal {
     width: 100%;
     height: 100%;
